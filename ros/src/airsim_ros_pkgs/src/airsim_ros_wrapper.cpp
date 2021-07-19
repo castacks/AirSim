@@ -106,6 +106,23 @@ void AirsimROSWrapper::initialize_ros()
     airsim_control_update_timer_ = nh_private_.createTimer(ros::Duration(update_airsim_control_every_n_sec), &AirsimROSWrapper::drone_state_timer_cb, this);
 }
 
+// void AirsimROSWrapper::FCU_CallBack(const gazebo_msgs::ModelStates::ConstPtr& msg){
+//     geometry_msgs::Pose gazebo_pose;
+
+//     // gazebo values of orientation x,y,z,w
+//     gazebo_pose.orientation.x = msg->pose[2].orientation.x;
+//     gazebo_pose.orientation.y = msg->pose[2].orientation.y;
+//     gazebo_pose.orientation.z = msg->pose[2].orientation.z;
+//     gazebo_pose.orientation.w = msg->pose[2].orientation.w;
+
+//     // gazebo values of position x,y,z
+//     gazebo_pose.position.x = msg->pose[2].position.x;
+//     gazebo_pose.position.y = msg->pose[2].position.y;
+//     gazebo_pose.position.z = msg->pose[2].position.z;
+
+//     // get current pose of airsim vehicle in order to manipulate it
+// }
+
 // XmlRpc::XmlRpcValue can't be const in this case
 void AirsimROSWrapper::create_ros_pubs_from_settings_json()
 {
@@ -162,6 +179,9 @@ void AirsimROSWrapper::create_ros_pubs_from_settings_json()
             drone->land_srvr = nh_private_.advertiseService<airsim_ros_pkgs::Land::Request, airsim_ros_pkgs::Land::Response>(curr_vehicle_name + "/land",
                                                                                                                              boost::bind(&AirsimROSWrapper::land_srv_cb, this, _1, _2, vehicle_ros->vehicle_name));
             // vehicle_ros.reset_srvr = nh_private_.advertiseService(curr_vehicle_name + "/reset",&AirsimROSWrapper::reset_srv_cb, this);
+
+            // subscribe to /gazebo/model_states to get vehicle pose into AirSim
+            // auto fcu_sub = nh_private_.subscribe("/gazebo/model_states", 10, &AirsimROSWrapper::FCU_CallBack, this);
         }
         else {
             auto car = static_cast<CarROS*>(vehicle_ros.get());

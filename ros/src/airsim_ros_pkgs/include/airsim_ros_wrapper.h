@@ -63,6 +63,8 @@ STRICT_MODE_OFF //todo what does this do?
 #include <tf2/convert.h>
 #include <unordered_map>
 #include <memory>
+#include <gazebo_msgs/ModelStates.h>
+#include <geometry_msgs/Pose.h>
     // #include "nodelet/nodelet.h"
 
     // todo move airlib typedefs to separate header file?
@@ -233,6 +235,8 @@ private:
     // void vel_cmd_body_frame_cb(const airsim_ros_pkgs::VelCmd& msg, const std::string& vehicle_name);
     void gimbal_angle_quat_cmd_cb(const airsim_ros_pkgs::GimbalAngleQuatCmd& gimbal_angle_quat_cmd_msg);
     void gimbal_angle_euler_cmd_cb(const airsim_ros_pkgs::GimbalAngleEulerCmd& gimbal_angle_euler_cmd_msg);
+
+    void FCU_CallBack(const gazebo_msgs::ModelStates::ConstPtr& msg);
 
     // commands
     void car_cmd_cb(const airsim_ros_pkgs::CarControls::ConstPtr& msg, const std::string& vehicle_name);

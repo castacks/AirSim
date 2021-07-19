@@ -14,6 +14,16 @@
 		<param name="host_ip" type="string" value="$(arg host)" />
 	</node>
 
+	<node pkg="airsim_ros_pkgs" name="gazebo_bridge" type="gazebo_pose.py" output="screen">
+		<param name="client_ip" type="string" value="192.168.88.249"/>
+		<param name="disable_camera" type="bool" value="false"/>
+		<param name="cv_mode" type="bool" value="false"/>
+		<param name="camlist" type="string" value="0, 3"/>
+		<param name="image_types" type="string" value="Scene,DepthPlanner"/>
+		<param name="actor_name" type="string" value="person_actor"/>
+		<param name="speed_up" type="double" value="1.0"/>
+	</node>
+
 	<!-- Static transforms -->
 	<include file="$(find airsim_ros_pkgs)/launch/static_transforms.launch"/>
 </launch>
