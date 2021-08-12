@@ -808,7 +808,8 @@ sensor_msgs::MagneticField AirsimROSWrapper::get_mag_msg_from_airsim(const msr::
 sensor_msgs::NavSatFix AirsimROSWrapper::get_gps_msg_from_airsim(const msr::airlib::GpsBase::Output& gps_data) const
 {
     sensor_msgs::NavSatFix gps_msg;
-    gps_msg.header.stamp = airsim_timestamp_to_ros(gps_data.time_stamp);
+    // gps_msg.header.stamp = airsim_timestamp_to_ros(gps_data.time_stamp);
+    gps_msg.header.stamp = ros::Time::now();
     gps_msg.latitude = gps_data.gnss.geo_point.latitude;
     gps_msg.longitude = gps_data.gnss.geo_point.longitude;
     gps_msg.altitude = gps_data.gnss.geo_point.altitude;
@@ -975,6 +976,7 @@ ros::Time AirsimROSWrapper::update_state()
     // iterate over drones
     for (auto& vehicle_name_ptr_pair : vehicle_name_ptr_map_) {
         ros::Time vehicle_time;
+
         // get drone state from airsim
         auto& vehicle_ros = vehicle_name_ptr_pair.second;
 
@@ -986,7 +988,8 @@ ros::Time AirsimROSWrapper::update_state()
             auto rpc = static_cast<msr::airlib::MultirotorRpcLibClient*>(airsim_client_.get());
             drone->curr_drone_state = rpc->getMultirotorState(vehicle_ros->vehicle_name);
 
-            vehicle_time = airsim_timestamp_to_ros(drone->curr_drone_state.timestamp);
+            // vehicle_time = airsim_timestamp_to_ros(drone->curr_drone_state.timestamp);
+            vehicle_time = ros::Time::now();
             if (!got_sim_time) {
                 curr_ros_time = vehicle_time;
                 got_sim_time = true;
@@ -1329,7 +1332,8 @@ sensor_msgs::ImagePtr AirsimROSWrapper::get_img_msg_from_response(const ImageRes
     sensor_msgs::ImagePtr img_msg_ptr = boost::make_shared<sensor_msgs::Image>();
     img_msg_ptr->data = img_response.image_data_uint8;
     img_msg_ptr->step = img_response.width * 3; // todo un-hardcode. image_width*num_bytes
-    img_msg_ptr->header.stamp = airsim_timestamp_to_ros(img_response.time_stamp);
+    // img_msg_ptr->header.stamp = airsim_timestamp_to_ros(img_response.time_stamp);
+    img_msg_ptr->header.stamp = ros::Time::now();
     img_msg_ptr->header.frame_id = frame_id;
     img_msg_ptr->height = img_response.height;
     img_msg_ptr->width = img_response.width;

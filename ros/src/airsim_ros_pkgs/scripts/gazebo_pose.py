@@ -32,8 +32,8 @@ class Gazebo_Pose:
         #     print(p)
 
         self.pose_info = "Initialising"
-	rospy.spin()
-	return
+        rospy.spin()
+        return
 
     def FCU_callback(self, msg):
         self.pose_info = msg.pose[2]
@@ -90,10 +90,10 @@ class Gazebo_Pose:
 
 def main(args):
     try:
-	rospy.init_node("gazebo_pose_node")
-	client_ip = rospy.get_param('~client_ip', '')
-	sm = Gazebo_Pose(client_ip)
-#	sm = Gazebo_Pose()
+        rospy.init_node("gazebo_pose_node")
+        client_ip = rospy.get_param('~client_ip', '')
+        sm = Gazebo_Pose(client_ip)
+    #	sm = Gazebo_Pose()
     except KeyboardInterrupt:
         print("Shutting down")
 
