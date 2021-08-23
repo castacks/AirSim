@@ -3,6 +3,8 @@
 	<arg name="publish_clock" default="false"/>
 	<arg name="is_vulkan" default="true"/>
 	<arg name="host" default="localhost" />
+	<arg name="client" default="localhost" />
+	<!-- <arg name="client" default="192.168.88.249" /> -->
 
 	<node name="airsim_node" pkg="airsim_ros_pkgs" type="airsim_node" output="$(arg output)">
 		<param name="is_vulkan" type="bool" value="false" /> 
@@ -16,7 +18,7 @@
 	</node>
 
 	<node pkg="airsim_ros_pkgs" name="gazebo_bridge" type="gazebo_pose.py" output="screen">
-		<param name="client_ip" type="string" value="192.168.88.249"/>
+		<param name="client_ip" type="string" value="$(arg client)"/>
 		<param name="disable_camera" type="bool" value="false"/>
 		<param name="cv_mode" type="bool" value="false"/>
 		<param name="camlist" type="string" value="0, 3"/>
