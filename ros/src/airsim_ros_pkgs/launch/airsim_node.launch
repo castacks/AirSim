@@ -25,6 +25,10 @@
 		<param name="speed_up" type="double" value="1.0"/>
 	</node>
 
+	<node pkg="airsim_ros_pkgs" name="object_pose" type="object_pose.py" output="screen">
+		<param name="client_ip" type="string" value="192.168.88.249"/>
+	</node>
+
 	<!-- Static transforms -->
 	<include file="$(find airsim_ros_pkgs)/launch/static_transforms.launch"/>
 </launch>

@@ -1,0 +1,2 @@
+string object_uid
+geometry_msgs/Pose pose
