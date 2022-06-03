@@ -27,7 +27,6 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
   mavros_msgs
-  message_generation
   nav_msgs
   # nodelet
   roscpp
@@ -41,6 +40,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   tf2_sensor_msgs
   tf2_geometry_msgs
+  message_generation
 )
 
 add_message_files(
@@ -54,6 +54,8 @@ add_message_files(
   CarState.msg
   Altimeter.msg
   Environment.msg
+  ObjectPose.msg
+  ObjectPoseArray.msg
 )
 
 add_service_files(
