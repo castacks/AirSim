@@ -3,6 +3,7 @@
 	<arg name="publish_clock" default="false"/>
 	<arg name="is_vulkan" default="true"/>
 	<arg name="host" default="localhost" />
+	<arg name="publish_object_poses" default="false" />
 
 	<node name="airsim_node" pkg="airsim_ros_pkgs" type="airsim_node" output="$(arg output)">
 		<param name="is_vulkan" type="bool" value="false" /> 
@@ -25,9 +26,12 @@
 		<param name="speed_up" type="double" value="1.0"/>
 	</node>
 
-	<node pkg="airsim_ros_pkgs" name="object_pose" type="object_pose.py" output="screen">
-		<param name="client_ip" type="string" value="192.168.88.249"/>
-	</node>
+	
+	<group if="$(arg publish_object_poses)">
+        <node pkg="airsim_ros_pkgs" name="object_pose" type="object_pose.py" output="screen">
+			<param name="client_ip" type="string" value="192.168.88.249"/>
+		</node>
+    </group>
 
 	<!-- Static transforms -->
 	<include file="$(find airsim_ros_pkgs)/launch/static_transforms.launch"/>
