@@ -15,11 +15,13 @@ class Object_Pose:
 
     def __init__(self, ip=''):
         # Instatiate instance of the airsim
-        print(airsim.__file__)
+        # print(airsim.__file__)
 
         self.client = airsim.MultirotorClient(ip = ip)
         self.client.confirmConnection()
-        self.object_list = self.client.simListSceneObjects()
+        object_regex = rospy.get_param("/object_pose/object_pose_list_regex")
+        print(object_regex)
+        self.object_list = self.client.simListSceneObjects(name_regex=object_regex)
 
 
     def get_object_pose(self, time, frame):

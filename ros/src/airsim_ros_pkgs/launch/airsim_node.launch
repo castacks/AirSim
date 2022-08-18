@@ -29,7 +29,8 @@
 	
 	<group if="$(arg publish_object_poses)">
         <node pkg="airsim_ros_pkgs" name="object_pose" type="object_pose.py" output="screen">
-			<param name="client_ip" type="string" value="192.168.88.249"/>
+			<param name="client_ip" type="string" value="128.237.99.41"/>
+			<rosparam file="$(find airsim_ros_pkgs)/config/object_pose.yaml" />
 		</node>
     </group>
 
