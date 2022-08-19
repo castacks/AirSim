@@ -7,6 +7,8 @@ import rospy
 import airsim
 from rospkg import RosPack
 from airsim_ros_pkgs.msg import ObjectPose, ObjectPoseArray
+from geometry_msgs.msg import Pose
+from gazebo_msgs.msg import ModelStates
 
 package = RosPack()
 package_path = package.get_path('airsim_ros_pkgs')
@@ -22,24 +24,32 @@ class Object_Pose:
         object_regex = rospy.get_param("/object_pose/object_pose_list_regex")
         print(object_regex)
         self.object_list = self.client.simListSceneObjects(name_regex=object_regex)
+        self.print_object_ids()
+
+    def print_object_ids(self):
+        count = 0
+        for o in self.object_list:
+            print(count, o)
+            count += 1
 
 
     def get_object_pose(self, time, frame):
-        object_pose_array = ObjectPoseArray()
-        object_pose_array.header.stamp = time
-        object_pose_array.header.frame_id = frame
+        object_pose_array = ModelStates()
+        # object_pose_array.header.stamp = time
+        # object_pose_array.header.frame_id = frame
         for o in self.object_list:
             pose = self.client.simGetObjectPose(o)
-            object_pose = ObjectPose()
-            object_pose.object_uid = o
-            object_pose.pose.orientation.w = pose.orientation.w_val
-            object_pose.pose.orientation.x = pose.orientation.x_val
-            object_pose.pose.orientation.y = pose.orientation.y_val
-            object_pose.pose.orientation.z = pose.orientation.z_val
-            object_pose.pose.position.x = pose.position.x_val
-            object_pose.pose.position.y = pose.position.y_val
-            object_pose.pose.position.z = pose.position.z_val
-            object_pose_array.objects.append(object_pose)
+            object_pose = Pose()
+            object_pose_array.name.append(o)
+            object_pose.orientation.w = pose.orientation.w_val
+            object_pose.orientation.x = pose.orientation.x_val
+            object_pose.orientation.y = pose.orientation.y_val
+            object_pose.orientation.z = pose.orientation.z_val
+            object_pose.position.x = pose.position.x_val
+            object_pose.position.y = pose.position.y_val
+            object_pose.position.z = pose.position.z_val
+            object_pose_array.pose.append(object_pose)
+            # object_pose_array.objects.append(object_pose)
         return object_pose_array
 
 def main(args):
@@ -47,7 +57,7 @@ def main(args):
     client_ip = rospy.get_param('~client_ip', '')
     obj = Object_Pose(client_ip)
 
-    object_pose_pub = rospy.Publisher('/airsim_node/sim_object_poses_array', ObjectPoseArray, queue_size=10)
+    object_pose_pub = rospy.Publisher('/airsim_node/sim_object_poses_array', ModelStates, queue_size=10)
     rate = rospy.Rate(10)
     time = rospy.Time()
     frame = "local_ned"
